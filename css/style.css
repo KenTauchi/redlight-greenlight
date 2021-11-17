@@ -5,7 +5,7 @@
 
 .text {
   position: fixed;
-  left: 20%;
+  left: 50%;
   transform: translateX(-50%);
   font-size: 50px;
   font-family: Arial, Helvetica, sans-serif;
