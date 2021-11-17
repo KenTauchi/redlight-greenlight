@@ -40,18 +40,18 @@ class Doll {
   constructor() {
     loader.load("../models/scene.gltf", (gltf) => {
       scene.add(gltf.scene);
-      gltf.scene.scale.set(0.4, 0.4, 0.4);
-      gltf.scene.position.set(0, -1, 0.3);
+      gltf.scene.scale.set(0.3, 0.3, 0.3);
+      gltf.scene.position.set(-3, -1, 0.1);
       this.doll = gltf.scene;
     });
   }
 
   lookBackward() {
-    gsap.to(this.doll.rotation, { y: -3.15, duration: 0.45 });
+    gsap.to(this.doll.rotation, { y: 2, duration: 0.45 });
     setTimeout(() => (isLookingBackward = true), 450);
   }
   lookForward() {
-    gsap.to(this.doll.rotation, { y: 0, duration: 0.45 });
+    gsap.to(this.doll.rotation, { y: -1.3, duration: 0.45 });
     setTimeout(() => (isLookingBackward = false), 150);
   }
   async start() {
@@ -65,17 +65,21 @@ class Doll {
 
 class Player {
   constructor() {
-    const geometry = new THREE.SphereGeometry(0.3, 32, 16);
-    const material = new THREE.MeshBasicMaterial({ color: "0xffffff" });
-    const sphere = new THREE.Mesh(geometry, material);
-    sphere.position.z = 1.4;
-    sphere.position.x = start_position;
-    scene.add(sphere);
-    this.player = sphere;
-    this.playerInfo = {
-      positionX: start_position,
-      velocity: 0,
-    };
+    // const geometry = new THREE.SphereGeometry(0.3, 32, 16);
+    // const material = new THREE.MeshBasicMaterial({ color: "0xffffff" });
+    // const sphere = new THREE.Mesh(geometry, material);
+    // sphere.position.z = 1.4;
+    // sphere.position.x = start_position;
+    loader.load("../models2/scene.gltf", (gltf) => {
+      scene.add(gltf.scene);
+      gltf.scene.scale.set(0.005, 0.005, 0.005);
+      gltf.scene.position.set(-3, -1.5, 1);
+      this.player = gltf.scene;
+      this.playerInfo = {
+        positionX: start_position,
+        velocity: 0,
+      };
+    });
   }
   run() {
     this.playerInfo.velocity = 0.03;
@@ -93,24 +97,24 @@ class Player {
       text.innerText = "Survived";
     }
   }
-  update() {
+  async update() {
     this.check();
+    await delay(Math.random() * 1);
     this.playerInfo.positionX -= this.playerInfo.velocity;
     this.player.position.x = this.playerInfo.positionX;
   }
 }
 
 const player = new Player();
+const doll = new Doll();
 
 const createTrack = () => {
-  createCube({ w: start_position * 2 + 0.21, h: 1.5, d: 1 }, 0, 0, 0xe5a716).position.z = -1;
-  createCube({ w: 0.2, h: 1.5, d: 1 }, start_position, -0.4);
-  createCube({ w: 0.2, h: 1.5, d: 1 }, end_position, 0.4);
+  createCube({ w: start_position * 3.5 + 0.21, h: 5.4, d: 1 }, 0, 0, 0xe5a716).position.z = -2;
+  createCube({ w: 0.2, h: 4.5, d: 1 }, 4, -0.4);
+  createCube({ w: 0.2, h: 4.5, d: 1 }, -4, 0.4);
 };
 
 createTrack();
-
-let doll = new Doll();
 
 const startGame = () => {
   let progressBar = createCube({ w: 5, h: 0.1, d: 1 }, 0);
